@@ -15,17 +15,43 @@ namespace AuthApplication.Controllers
             _rep = rep;
         }
 
+        //find all users
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _rep.GetAll();
             return Ok(users);
         }
-
-        [HttpPost]
-        public async Task<UsuarioModel> PostUser(UsuarioModel user)
+        //find user by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserByEmail(int id)
         {
-            return await _rep.Post(user);
+            UsuarioModel user = await _rep.GetById(id);
+            return Ok(user);
+        }
+
+        //create user
+        [HttpPost]
+        public async Task<IActionResult> PostUser(UsuarioModel user)
+        {
+            UsuarioModel userToPost =  await _rep.Post(user);
+            return Ok(userToPost);
+        }
+
+        // update user
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(int id, UsuarioModel user)
+        {
+            UsuarioModel userToChange = await _rep.Put(id, user);
+            return Ok(userToChange);
+        }
+
+        // delete user
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            bool deleted = await _rep.Delete(id);
+            return Ok("usuario deletado com sucesso");
         }
     }
 }

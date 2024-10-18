@@ -74,7 +74,11 @@ namespace AuthApplication.Repository
             oldUser.Name = user.Name;
             oldUser.Email = user.Email;
             oldUser.Password = user.Password;
+            oldUser.GerarSenhaHash();
 
+            await _context.SaveChangesAsync();
+
+            return oldUser;
         }
     }
 }
