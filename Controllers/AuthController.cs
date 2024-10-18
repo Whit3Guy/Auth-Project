@@ -2,6 +2,7 @@
 using AuthApplication.Model;
 using AuthApplication.Repository;
 using AuthApplication.Repository.Interfaces;
+using AuthApplication.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,11 @@ namespace AuthApplication.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUsuarioRepository _rep;
-        public AuthController(IUsuarioRepository rep)
+        private readonly TokenService _serviceToken;
+        public AuthController(IUsuarioRepository rep, TokenService service)
         {
             _rep = rep;
+            _serviceToken = service;
         }
 
 
@@ -23,11 +26,13 @@ namespace AuthApplication.Controllers
         {
             UsuarioModel user = await _rep.GetByEmail(userLogin.email);
             bool result = user.CompareHash(userLogin.password);
-            if (!result)
+            if (result is false)
             {
                 return BadRequest("senha incorreta!");
             }
-            return Ok("senha correta!");
+            var token = _serviceToken.GerarTokenJWT(user);
+            
+            return Ok(token);
             
         }
     }
