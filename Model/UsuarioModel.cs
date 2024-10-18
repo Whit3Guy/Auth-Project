@@ -23,11 +23,12 @@ namespace AuthApplication.Model
             this.Password = senhaHash;
         }
 
-        //public bool CompareHash(string password)
-        //{
-        //    var result = _passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
-        //    return result == PasswordVerificationResult.Success;
+        public bool CompareHash(string password)
+        {
+            var _passwordHasher = new PasswordHasher<string>();
+            var result = _passwordHasher.VerifyHashedPassword(null, this.Password, password);
+           return result == PasswordVerificationResult.Success;
         // preciso de um repository de user para buscar o hash da senha pelo email antes de implementar essa função
-        //}
+        }
     }
 }
