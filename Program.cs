@@ -1,11 +1,28 @@
+using AuthApplication.Database;
+using AuthApplication.Repository;
+using AuthApplication.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddEntityFrameworkSqlServer()
+    .AddDbContext<UsuarioDbContext>(options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("database")
+     ));
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
