@@ -1,4 +1,5 @@
-﻿using AuthApplication.Model;
+﻿using AuthApplication.DTOs;
+using AuthApplication.Model;
 
 namespace AuthApplication.Repository.Interfaces
 {
@@ -8,8 +9,8 @@ namespace AuthApplication.Repository.Interfaces
         public Task<List<UsuarioModel>> GetAll();
         public Task<UsuarioModel> GetById(int id);
         public Task<UsuarioModel> GetByEmail(string email);
-        public Task<UsuarioModel> Post(UsuarioModel user);
-        public Task<UsuarioModel> Put(int id ,UsuarioModel user);
+        public Task<UsuarioModel> Post(UsuarioPutPostDto user);
+        public Task<UsuarioModel> Put(int id ,UsuarioPutPostDto user);
         public Task<bool> Delete(int id);    
     }
 }

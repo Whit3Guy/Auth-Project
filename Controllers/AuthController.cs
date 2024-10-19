@@ -25,14 +25,21 @@ namespace AuthApplication.Controllers
         public async Task<IActionResult> Login(UsuarioLoginDto userLogin)
         {
             UsuarioModel user = await _rep.GetByEmail(userLogin.email);
+
             bool result = user.CompareHash(userLogin.password);
+
             if (result is false)
             {
-                return BadRequest("senha incorreta!");
+                LoginResponse bad_result = new LoginResponse(false, null, null);
+                return Unauthorized(bad_result);
             }
+
             var token = _serviceToken.GerarTokenJWT(user);
-            
-            return Ok(token);
+
+            UserStorageDto user_response = new (user.Id, user.Name, user.Email);
+            LoginResponse response = new (true, token, user_response);
+
+            return Ok(response);
             
         }
     }

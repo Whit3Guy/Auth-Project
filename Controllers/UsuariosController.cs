@@ -1,5 +1,7 @@
-﻿using AuthApplication.Model;
+﻿using AuthApplication.DTOs;
+using AuthApplication.Model;
 using AuthApplication.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +24,7 @@ namespace AuthApplication.Controllers
             var users = await _rep.GetAll();
             return Ok(users);
         }
-        //find user by id
+        [Authorize(Policy = "User")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByEmail(int id)
         {
@@ -32,21 +34,21 @@ namespace AuthApplication.Controllers
 
         //create user
         [HttpPost]
-        public async Task<IActionResult> PostUser(UsuarioModel user)
+        public async Task<IActionResult> PostUser(UsuarioPutPostDto user)
         {
-            UsuarioModel userToPost =  await _rep.Post(user);
+            UsuarioModel userToPost =  await _rep.Post(new(user.Name, user.Password, user.Email));
             return Ok(userToPost);
         }
 
         // update user
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UsuarioModel user)
+        public async Task<IActionResult> PutUser(int id, UsuarioPutPostDto user)
         {
             UsuarioModel userToChange = await _rep.Put(id, user);
             return Ok(userToChange);
         }
 
-        // delete user
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

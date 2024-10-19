@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(option =>
 // Uma autorização para user comum e outra para admin, apenas admins podem ler listas de Usuarios e deletar usuarios.
 builder.Services.AddAuthorization(option =>
 {
-    option.AddPolicy("Admin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    option.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
 });
 
 builder.Services.AddAuthorization(option =>

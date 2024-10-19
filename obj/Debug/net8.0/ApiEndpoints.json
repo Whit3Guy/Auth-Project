@@ -35,7 +35,7 @@
     "Parameters": [
       {
         "Name": "user",
-        "Type": "AuthApplication.Model.UsuarioModel",
+        "Type": "AuthApplication.DTOs.UsuarioPutPostDto",
         "IsRequired": true
       }
     ],
@@ -72,7 +72,7 @@
       },
       {
         "Name": "user",
-        "Type": "AuthApplication.Model.UsuarioModel",
+        "Type": "AuthApplication.DTOs.UsuarioPutPostDto",
         "IsRequired": true
       }
     ],

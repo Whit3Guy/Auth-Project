@@ -1,4 +1,5 @@
 ﻿using AuthApplication.Database;
+using AuthApplication.DTOs;
 using AuthApplication.Model;
 using AuthApplication.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -53,16 +54,17 @@ namespace AuthApplication.Repository
             return user;
         }
 
-        public async Task<UsuarioModel> Post(UsuarioModel user)
+        public async Task<UsuarioModel> Post(UsuarioPutPostDto usuario)
         {
+            UsuarioModel user = new UsuarioModel(usuario.Name, usuario.Email, usuario.Password);
             user.GerarSenhaHash();
             
-            await _context.Usuarios.AddAsync(new UsuarioModel(user.Name, user.Email, user.Password));
+            await _context.Usuarios.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }
 
-        public async Task<UsuarioModel> Put(int id, UsuarioModel user)
+        public async Task<UsuarioModel> Put(int id, UsuarioPutPostDto user)
         {
             UsuarioModel? oldUser = await _context.Usuarios.FirstOrDefaultAsync(p => p.Id == id);
 
