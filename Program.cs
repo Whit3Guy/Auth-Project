@@ -11,13 +11,14 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-
+Console.WriteLine("string de cenexÃ£o");
+Console.WriteLine(builder.Configuration.GetConnectionString("database"));
 builder.Services.AddControllers();
 
 // Get Secret key in app.settings
 if (builder.Configuration["JwtSettings:SecretKey"] is null || builder.Configuration["JwtSettings:ValidIssuer"] is null || builder.Configuration["JwtSettings:ValidAudience"] is null)
 {
-    throw new Exception("As variaveis do Jwt estão vazias");
+    throw new Exception("As variaveis do Jwt estï¿½o vazias");
 }
     Console.WriteLine(builder.Configuration["JwtSettings:ValidAudience"]);
     Console.WriteLine(builder.Configuration["JwtSettings:SecretKey"]);
@@ -43,7 +44,7 @@ builder.Services.AddEntityFrameworkSqlServer()
 // escopo do repositorio UsuarioRepository
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-// construir autenticação jwt Bearer
+// construir autenticaï¿½ï¿½o jwt Bearer
 
 builder.Services.AddAuthentication(option =>
 {
@@ -66,7 +67,7 @@ builder.Services.AddAuthentication(option =>
     };
 });
 
-// Uma autorização para user comum e outra para admin, apenas admins podem ler listas de Usuarios e deletar usuarios.
+// Uma autorizaï¿½ï¿½o para user comum e outra para admin, apenas admins podem ler listas de Usuarios e deletar usuarios.
 builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));

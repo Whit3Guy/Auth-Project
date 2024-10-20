@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: api-auth
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;User Id=sa;Password=Euamo1cachorro;TrustServerCertificate=True
+
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - "MSSQL_SA_PASSWORD=${SA_PASSWORD}"
+      - "ACCEPT_EULA=1"
+      - "MSSQL_DATABASE=${DATABASE}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - "mssql-data:/var/opt/mssql"
+
+volumes:
+  mssql-data:
+    driver: local
